@@ -9,11 +9,13 @@ io.on("connection", (socket) => {
 })
 
 const exphbs  = require('express-handlebars');
-app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
+app.engine('handlebars', exphbs.engine({ defaultLayout: 'index' }));
 app.set('view engine', 'handlebars');
 
+app.use('/public', express.static('public'))
+
 app.get('/', (req, res) => {
-  res.render('index.handlebars');
+  res.render('layouts/index.handlebars');
 })
 
 server.listen('3000', () => {
