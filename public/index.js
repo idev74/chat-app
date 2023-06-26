@@ -24,7 +24,7 @@ $(document).ready(() => {
     });
     $('#new-channel-btn').click(() => {
         let newChannel = $('#new-channel-input').val();
-       
+
         if (newChannel.length > 0) {
             socket.emit('new channel', newChannel);
             $('#new-channel-input').val("");
@@ -53,5 +53,23 @@ $(document).ready(() => {
         for (username in onlineUsers) {
             $('.users-online').append(`<p>${username}</p>`);
         }
+    });
+    socket.on('new channel', (newChannel) => {
+        $('.channels').append(`<div class="channel">${newChannel}</div>`);
+    });
+    socket.on('user changed channel', (data) => {
+        $('.channel-current').addClass('channel');
+        $('.channel-current').removeClass('channel-current');
+        $(`.channel:contains('${data.channel}')`).addClass('channel-current');
+        $('.channel-current').removeClass('channel');
+        $('.message').remove();
+        data.messages.forEach((message) => {
+            $('.message-container').append(`
+            <div class="message">
+              <p class="message-user">${message.sender}: </p>
+              <p class="message-text">${message.message}</p>
+            </div>
+          `);
+        });
     });
 });
