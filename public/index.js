@@ -22,6 +22,15 @@ $(document).ready(() => {
             $('#chat-input').val("");
         }
     });
+    $('#new-channel-btn').click(() => {
+        let newChannel = $('#new-channel-input').val();
+       
+        if (newChannel.length > 0) {
+            socket.emit('new channel', newChannel);
+            $('#new-channel-input').val("");
+        }
+    });
+
     socket.on('new user', (username) => {
         console.log(`${username} has joined the chat`);
         $('.users-online').append(`<div class="user-online">${username}</div>`);
