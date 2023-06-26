@@ -33,4 +33,7 @@ module.exports = (io, socket, onlineUsers, channels) => {
             messages: channels[newChannel]
         });
     });
+    socket.on('fetch channels', () => {
+        socket.emit('fetch channels', channels);
+    });
 }

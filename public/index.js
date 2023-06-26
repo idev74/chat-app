@@ -2,6 +2,7 @@ $(document).ready(() => {
     const socket = io.connect();
     let currentUser;
     socket.emit('get online users');
+    socket.emit('fetch channels');
     socket.emit('user changed channel', "General");
     $(document).on('click', '.channel', (e) => {
         let newChannel = e.target.textContent;
@@ -82,5 +83,10 @@ $(document).ready(() => {
             </div>
           `);
         });
+    });
+    socket.on('fetch channels', (channels) => {
+        for (channel in channels) {
+            $('.channels').append(`<div class="channel">${channel}</div>`);
+        }
     });
 });
