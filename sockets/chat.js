@@ -6,8 +6,8 @@ module.exports = (io, socket, onlineUsers, channels) => {
         io.emit("new user", username);
     })
     socket.on('new message', (data) => {
-        console.log(`🎤 ${data.sender}: ${data.message} 🎤`)
-        io.emit('new message', data);
+        channels[data.channel].push({ sender: data.sender, message: data.message });
+        io.to(data.channel).emit('new message', data);
     })
     socket.on('get online users', () => {
         socket.emit('get online users', onlineUsers);
@@ -22,8 +22,8 @@ module.exports = (io, socket, onlineUsers, channels) => {
         socket.join(newChannel);
         io.emit('new channel', newChannel);
         socket.emit('user changed channel', {
-          channel : newChannel,
-          messages : channels[newChannel]
+            channel: newChannel,
+            messages: channels[newChannel]
         });
-      });
+    });
 }
