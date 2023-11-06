@@ -11,9 +11,11 @@ $(document).ready(() => {
 
     $('#create-user-btn').click((e) => {
         e.preventDefault();
-        if ($('#username-input').val().length > 0) {
-            socket.emit('new user', $('#username-input').val());
-            currentUser = $('#username-input').val();
+        const usernameInput = $('#username-input').val();
+        if (usernameInput.length > 0) {
+            const sanitizedUsername = DOMPurify.sanitize(usernameInput);
+            socket.emit('new user', sanitizedUsername);
+            currentUser = sanitizedUsername;
             $('.username-form').remove();
             $('.main-container').css('display', 'flex');
         }
